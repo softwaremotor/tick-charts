@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "influxdb.fullname" . }}
   labels:
-    app: {{ template "fullname" . }}
+    app: {{ template "influxdb.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"

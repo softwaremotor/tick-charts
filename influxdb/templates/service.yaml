@@ -36,4 +36,4 @@ spec:
     targetPort: {{ .Values.config.opentsdb.bind_address }}
   {{- end }}
   selector:
-    app: {{ template "fullname" . }}
+    app: {{ template "influxdb.fullname" . }}
