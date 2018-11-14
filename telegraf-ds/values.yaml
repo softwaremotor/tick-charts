@@ -3,7 +3,7 @@
 ## ref: https://hub.docker.com/r/library/telegraf/tags/
 image:
   repo: "telegraf"
-  tag: "1.7.3-alpine"
+  tag: "1.8.3-alpine"
   pullPolicy: IfNotPresent
 
 ## Configure resource requests and limits
@@ -15,9 +15,14 @@ resources:
   limits:
     memory: 2Gi
     cpu: 1
-    
+
+## Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
 ## Exposed telegraf configuration
-## ref: https://docs.influxdata.com/telegraf/v1.7/administration/configuration/
+## ref: https://docs.influxdata.com/telegraf/v1.8/administration/configuration/
 config:
   # global_tags:
   #   cluster: "mycluster"
@@ -30,24 +35,24 @@ config:
     flush_interval: "10s"
     flush_jitter: "0s"
   outputs:
-    influxdb:
-      url: "http://data-influxdb.tick:8086"
-      database: "telegraf"
-      retention_policy: ""
-      timeout: "5s"
-      username: ""
-      password: ""
-      user_agent: "telegraf"
-      insecure_skip_verify: false
+    - influxdb:
+        url: "http://data-influxdb.tick:8086"
+        database: "telegraf"
+        retention_policy: ""
+        timeout: "5s"
+        username: ""
+        password: ""
+        user_agent: "telegraf"
+        insecure_skip_verify: false
   inputs:
-    kubernetes:
-      url: "http://$HOSTIP:10255"
-      bearer_token: "/var/run/secrets/kubernetes.io/serviceaccount/token"
-      insecure_skip_verify: true
-    docker: 
-      endpoint: "unix:///var/run/docker.sock"
-      timeout: "5s"
-      perdevice: true
-      total: false
-      docker_label_exclude:
-        - "annotation.kubernetes.io/*"
+    - kubernetes:
+        url: "https://$HOSTIP:10250"
+        bearer_token: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+        insecure_skip_verify: true
+    - docker: 
+        endpoint: "unix:///var/run/docker.sock"
+        timeout: "5s"
+        perdevice: true
+        total: false
+        docker_label_exclude:
+          - "annotation.kubernetes.io/*"

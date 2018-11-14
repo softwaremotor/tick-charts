@@ -1,4 +1,3 @@
-{{- if gt (len .Values.config.outputs.influxdb.urls) 0 }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -30,6 +29,18 @@ spec:
         - name: varrunutmpro
           mountPath: /var/run/utmp
           readOnly: true
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
       volumes:
       - name: varrunutmpro
         hostPath:
@@ -37,4 +48,3 @@ spec:
       - name: config
         configMap:
           name: {{ template "fullname" . }}
-{{- end -}}

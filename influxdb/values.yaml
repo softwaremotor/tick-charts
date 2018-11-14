@@ -2,7 +2,7 @@
 ## ref: https://hub.docker.com/r/library/influxdb/tags/
 image:
   repo: "influxdb"
-  tag: "1.6.1-alpine"
+  tag: "1.7.0-alpine"
   pullPolicy: IfNotPresent
 
 ## Specify a service type
@@ -33,26 +33,24 @@ resources:
     memory: 16Gi
     cpu: 8
 
-## Use an alternate scheduler, e.g. "stork".
-## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
-##
-# schedulerName:
-
 ## Node labels for pod assignment
-## Ref: https://kubernetes.io/docs/user-guide/node-selection/
-##
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+#
 nodeSelector: {}
 
-## The InfluxDB image uses several environment variables to automatically
-## configure certain parts of the server.
-## Ref: https://hub.docker.com/_/influxdb/
-env:
-  # - name: INFLUXDB_DB
-  #   value: "demo"
+## Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
 
 ## Change InfluxDB configuration paramaters below:
 ## Defaults are indicated
-## ref: https://docs.influxdata.com/influxdb/v1.6/administration/config/
+## ref: https://docs.influxdata.com/influxdb/v1.7/administration/config/
 config:
   reporting_disabled: false
   bind_address: 8088
@@ -69,6 +67,8 @@ config:
     max_series_per_database: 1000000
     max_values_per_tag: 100000
     trace_logging_enabled: false
+    compact_throughput: 50331648
+    compact_throughput_burst: 50331648
   coordinator:
     write_timeout: 10s
     max_concurrent_queries: 0
@@ -111,6 +111,7 @@ config:
     realm: InfluxDB
     unix_socket_enabled: false
     bind_socket: /var/run/influxdb.sock
+    flux_enabled: true
   graphite:
     enabled: false
     bind_address: 2003

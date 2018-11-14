@@ -3,7 +3,7 @@
 ## ref: https://hub.docker.com/r/library/chronograf/tags/
 image:
   repository: "chronograf"
-  tag: "1.6.1-alpine"
+  tag: "1.7.2-alpine"
   pullPolicy: IfNotPresent
 
 ## Specify a service type
@@ -41,6 +41,21 @@ resources:
     memory: 2Gi
     cpu: 2
 
+## Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+#
+nodeSelector: {}
+
+## Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+
 ## Configure the ingress object to hook into existing infastructure
 ## ref : http://kubernetes.io/docs/user-guide/ingress/
 ## OPTIONALLY you can set .Values.ingress.secretName to set which secret to use
@@ -55,7 +70,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
 
 ## OAuth Settings for OAuth Providers
-## More information -> https://docs.influxdata.com/chronograf/v1.6/administration/managing-security/
+## More information -> https://docs.influxdata.com/chronograf/v1.7/administration/managing-security/
 ##
 oauth:
   # Need to set to true to use any of the oauth options
