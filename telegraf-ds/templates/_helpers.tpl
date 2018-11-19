@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "name" -}}
+{{- define "telegraf_ds.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 24 -}}
 {{- end -}}
 
@@ -10,7 +10,7 @@ Expand the name of the chart.
 Create a default fully qualified app name.
 We truncate at 24 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "fullname" -}}
+{{- define "telegraf_ds.fullname" -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 24 -}}
 {{- end -}}
@@ -21,7 +21,7 @@ We truncate at 24 chars because some Kubernetes name fields are limited to this 
   - agent section
 */}}
 
-{{- define "outputs" -}}
+{{- define "telegraf_ds.outputs" -}}
 {{- range $outputIdx, $configObject := . -}}
 {{- range $output, $config := . }}
     [[outputs.{{ $output }}]]
@@ -63,10 +63,10 @@ We truncate at 24 chars because some Kubernetes name fields are limited to this 
 {{- end }}
 {{- end -}}
 
-{{- define "inputs" -}}
+{{- define "telegraf_ds.inputs" -}}
 {{- range $inputIdx, $configObject := . -}}
     {{- range $input, $config := . -}}
-      
+
     [[inputs.{{- $input }}]]
     {{- if $config -}}
     {{- $tp := typeOf $config -}}

@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "telegraf_s.fullname" . }}
   labels:
-    app: {{ template "fullname" . }}
+    app: {{ template "telegraf_s.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
 spec:
@@ -11,14 +11,14 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "fullname" . }}
+        app: {{ template "telegraf_s.fullname" . }}
       annotations:
         # Include a hash of the configmap in the pod template
         # This means that if the configmap changes, the deployment will be rolled
         checksum/config: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       containers:
-      - name: {{ template "fullname" . }}
+      - name: {{ template "telegraf_s.fullname" . }}
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ default "" .Values.image.pullPolicy | quote }}
         resources:
@@ -47,4 +47,4 @@ spec:
           path: /var/run/utmp
       - name: config
         configMap:
-          name: {{ template "fullname" . }}
+          name: {{ template "telegraf_s.fullname" . }}

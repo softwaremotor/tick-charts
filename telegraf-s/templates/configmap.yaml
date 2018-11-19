@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "telegraf_s.fullname" . }}
   labels:
-    app: {{ template "fullname" . }}
+    app: {{ template "telegraf_s.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 data:
   telegraf.conf: |+
-    {{ template "global_tags" .Values.config.global_tags }}
-    {{ template "agent" .Values.config.agent }}
-    {{ template "outputs" .Values.config.outputs }}
-    {{ template "inputs" .Values.config.inputs -}}
+    {{ template "telegraf_s.global_tags" .Values.config.global_tags }}
+    {{ template "telegraf_s.agent" .Values.config.agent }}
+    {{ template "telegraf_s.outputs" .Values.config.outputs }}
+    {{ template "telegraf_s.inputs" .Values.config.inputs -}}
